@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Birthday</title>
+
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #1d1d29, #2a2440);
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+  }
+
+  /* Floating Confetti */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--c);
+    top: -10px;
+    left: var(--x);
+    opacity: 0.8;
+    animation: fall var(--d) linear infinite;
+    border-radius: 2px;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* Screen Base */
+  .screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+
+  .hidden { opacity: 0; pointer-events: none; }
+
+  /* Cake */
+  .cake-wrapper {
+    position: relative;
+    width: 170px;
+    margin: 0 auto 25px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .cake-body {
+    width: 170px;
+    height: 80px;
+    background: #d7b7a8;
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .frosting {
+    position: absolute;
+    top: -20px;
+    width: 170px;
+    height: 50px;
+    background: #ddaeae;
+    border-radius: 12px 12px 0 0;
+    clip-path: polygon(0 0, 100% 0, 100% 55%, 85% 70%, 70% 50%, 55% 75%, 40% 55%, 20% 78%, 0 55%);
+  }
+
+  .candle {
+    width: 12px;
+    height: 45px;
+    background: #743b3b;
+    border-radius: 3px;
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .flame {
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, #ffe066, #ff6f1c);
+    border-radius: 50%;
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: flicker 0.2s infinite alternate;
+    box-shadow: 0 0 12px #ffcd4d;
+  }
+
+  @keyframes flicker {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    100% { transform: translateX(-50%) scale(1.3); opacity: 1; }
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0;
+    background: linear-gradient(45deg, #ff9b9b, #ffdd7a, #a1f7b3, #9dd9ff, #c7b2ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: sparkle 2.5s infinite;
+  }
+
+  @keyframes sparkle {
+    50% { filter: brightness(1.5); }
+  }
+
+  p { margin-top: 10px; color: #b7b7c9; font-size: 17px; }
+
+  /* Button */
+  .btn {
+    margin-top: 30px;
+    padding: 14px 26px;
+    background: linear-gradient(45deg, #ffb86b, #ff9f1c);
+    border: none;
+    border-radius: 12px;
+    color: #1d1d29;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 159, 28, 0.4);
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px) scale(1.05);
+  }
+
+  /* Wishes Screen */
+  .wish-text {
+    font-size: 26px;
+    line-height: 1.5;
+    max-width: 85%;
+    color: #3a3838;
+    animation: fadeIn 1.2s ease;
+  }
+
+  /* Album */
+  .album-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .polaroid {
+    background: #fff;
+    width: 135px;
+    padding: 10px;
+    padding-bottom: 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #000;
+    transform: rotate(var(--angle));
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: 0.3s;
+  }
+
+  .polaroid:hover {
+    transform: scale(1.1) rotate(0deg);
+  }
+
+  .polaroid img {
+    width: 100%;
+    height: 135px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  .balloon-text {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ff9b9b, #ffd36b, #afffc4, #a5dbff, #d2bdff);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: sparkle 2s infinite;
+  }
+
+
+  /* Responsive adjustments */
+@media (max-width: 768px) {
+  .cake-wrapper {
+    width: 120px;
+  }
+
+  .cake-body {
+    width: 120px;
+    height: 60px;
+  }
+
+  .frosting {
+    width: 120px;
+    height: 35px;
+    top: -15px;
+  }
+
+  .candle {
+    width: 10px;
+    height: 35px;
+    top: -45px;
+  }
+
+  .flame {
+    width: 12px;
+    height: 12px;
+    top: -60px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .wish-text {
+    font-size: 18px;
+    max-width: 95%;
+    padding: 0 10px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  .balloon-text {
+    font-size: 28px;
+  }
+
+  .album-container {
+    gap: 12px;
+  }
+
+  .polaroid {
+    width: 100px;
+    padding-bottom: 20px;
+    font-size: 12px;
+  }
+
+  .polaroid img {
+    height: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- CONFETTI -->
+<script>
+for (let i = 0; i < 40; i++) {
+  let c = document.createElement("div");
+  c.className = "confetti";
+  c.style.setProperty("--x", Math.random() * 100 + "vw");
+  c.style.setProperty("--d", 3 + Math.random() * 4 + "s");
+  c.style.setProperty("--c", `hsl(${Math.random()*360}, 90%, 70%)`);
+  document.body.appendChild(c);
+}
+</script>
+
+<!-- SCREEN 1 -->
+<div id="screen1" class="screen">
+  <div class="cake-wrapper">
+    <div class="flame"></div>
+    <div class="candle"></div>
+    <div class="frosting"></div>
+    <div class="cake-body"></div>
+  </div>
+
+  <h1>Happy Birthday!</h1>
+  <p>Shirishhhh aka Mr. BurnZzz 🎉</p>
+
+  <button class="btn" onclick="goToWishes()">Let's Celebrate 🎈</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div id="screen2" class="screen hidden">
+  <div class="wish-text">
+    HAPPIEST BIRTHDAY CUTIEEE ❤️<br><br>
+    May your day be full of warmth, joy, smiles, and sweet memories.
+    You deserve all the happiness in the entire universe. You've grown so much and I'm SO proud of you.
+    I hope this year becomes your luckiest, brightest, and happiest one yet!
+    Stay happy, healthy, goofy, and forever my little domdom. Tons of good lucks and big hugsssss ✨
+  </div>
+
+  <button class="btn" onclick="goToAlbum()">Open Photo Album 📸</button>
+</div>
+
+<!-- SCREEN 3 -->
+<div id="screen3" class="screen hidden">
+  <h1 class="balloon-text">HAPPY BIRTHDAY 🎈✨</h1>
+
+  <div class="album-container">
+    <div class="polaroid" style="--angle:-5deg;">
+      <img src="img/pic1.png" alt="">
+      <div>CUTIE</div>
+    </div>
+
+    <div class="polaroid" style="--angle:4deg;">
+      <img src="img/pic2.png" alt="">
+      <div>PUNTEY</div>
+    </div>
+
+    <div class="polaroid" style="--angle:-3deg;">
+      <img src="img/pic3.png" alt="">
+      <div>Birthday yay</div>
+    </div>
+
+    <div class="polaroid" style="--angle:6deg;">
+      <img src="img/pic4.png" alt="">
+      <div>OOPSIE</div>
+    </div>
+
+    <div class="polaroid" style="--angle:-6deg;">
+      <img src="img/pic5.png" alt="">
+      <div>Let's FIGHT</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function goToWishes() {
+  document.getElementById("screen1").classList.add("hidden");
+  document.getElementById("screen2").classList.remove("hidden");
+}
+
+function goToAlbum() {
+  document.getElementById("screen2").classList.add("hidden");
+  document.getElementById("screen3").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
